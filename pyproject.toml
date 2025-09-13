@@ -1,0 +1,10 @@
+[project]
+name = "chess-player"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "dotenv>=0.9.9",
+    "mistralai>=1.9.10",
+]
