@@ -12,7 +12,11 @@ class Position(BaseModel):
     def to_tuple(self) -> Tuple[int, int]:
         """Convert to tuple representation."""
         return (self.row, self.col)
-
+    
+    def to_algebraic(self) -> str:
+        """Convert to algebraic notation (e.g., 'e4')."""
+        return f"{chr(self.col + ord('a'))}{8 - self.row}"
+    
 class Piece(BaseModel):
     """Represents a chess piece."""
     color: Literal['white', 'black']
@@ -30,6 +34,22 @@ class Piece(BaseModel):
         }
         symbol = piece_map[self.type]
         return symbol.lower() if self.color == 'white' else symbol
+
+class PieceMove(BaseModel):
+    """Represents a chess piece move."""
+    piece: Piece
+    from_position: Position
+    to_position: Position
+    
+    def __str__(self) -> str:
+        """Get standard algebraic notation for the move."""
+        piece_str = str(self.piece).upper()
+        # Don't include pawn symbol for pawn moves
+        if self.piece.type == 'pawn':
+            piece_str = ''
+        return f"{piece_str}{self.from_position.to_algebraic()}{self.to_position.to_algebraic()}"
+
+
 
 class Chessboard(BaseModel):
     """Represents a chessboard with pieces."""
